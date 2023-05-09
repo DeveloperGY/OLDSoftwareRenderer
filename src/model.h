@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 namespace sr
 {
@@ -18,5 +19,11 @@ namespace sr
         std::vector<int> indices;
 
         Model(std::string filename);
+
+        m3::mat4 modelMatrix();
+
+        void rotate(double x, double y, double z);
+        void translate(double x, double y, double z);
+        void scale(double x, double y, double z);
     };
 }
