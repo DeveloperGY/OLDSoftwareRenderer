@@ -1,6 +1,6 @@
 #include "model.h"
 
-sr::Model::Model(std::string filename): pos{m3::vec4(0, 0, 0, 1)}, rot{m3::vec4(0, 0, 0, 0)}, scl{m3::vec4(1, 1, 1, 0)}
+sr::Model::Model(std::string filename): pos{m3::vec4(0, 0, 0, 1)}, rot{m3::quat(0, 1, 0, 0)}, scl{m3::vec4(1, 1, 1, 0)}
 {
     std::fstream file;
     file.open(filename);
@@ -58,21 +58,20 @@ sr::Model::Model(std::string filename): pos{m3::vec4(0, 0, 0, 1)}, rot{m3::vec4(
 m3::mat4 sr::Model::modelMatrix()
 {
     m3::mat4 translation = m3::mat4::gen_translation(this->pos.x(), this->pos.y(), this->pos.z());
-    m3::quat rotation = m3::quat(this->rot.x(), m3::vec4(1, 0, 0, 0)) * m3::quat(this->rot.y(), m3::vec4(0, 1, 0, 0)) * m3::quat(this->rot.z(), m3::vec4(0, 0, 1, 0));
     m3::mat4 scale = m3::mat4::gen_scale(this->scl.x(), this->scl.y(), this->scl.z());
 
-    return translation * rotation * scale;
+    return translation * this->rot * scale;
 }
 
 void sr::Model::rotate(double x, double y, double z)
 {
-    this->rot.data[0] += x;
-    this->rot.data[1] += y;
-    this->rot.data[2] += z;
+    m3::quat rotX(x, m3::vec4(1, 0, 0, 0));
+    m3::quat rotY(y, m3::vec4(0, 1, 0, 0));
+    m3::quat rotZ(z, m3::vec4(0, 0, 1, 0));
 
-    this->rot.data[0] = std::fmod(this->rot.x(), 360.0);
-    this->rot.data[1] = std::fmod(this->rot.y(), 360.0);
-    this->rot.data[2] = std::fmod(this->rot.z(), 360.0);
+    m3::quat rot = rotX * rotY * rotZ;
+
+    this->rot = m3::quat::normalized(this->rot * rot);
 
     return;
 }

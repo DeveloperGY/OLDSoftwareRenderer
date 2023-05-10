@@ -9,8 +9,9 @@ namespace sr
         public:
         
             m3::vec4 pos;
+            m3::vec4 front;
             m3::vec4 world_up;
-            m3::vec4 target;
+            m3::quat rotation;
 
             Camera();
 

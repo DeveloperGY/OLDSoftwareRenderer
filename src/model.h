@@ -12,7 +12,7 @@ namespace sr
     struct Model
     {
         m3::vec4 pos;
-        m3::vec4 rot;
+        m3::quat rot;
         m3::vec4 scl;
 
         std::vector<m3::vec4> vertices;
