@@ -16,5 +16,5 @@ namespace sr
     void clean();
 
     void display();
-    void draw(sr::Model m, sr::Camera c);
+    void draw(sr::Model m, sr::Camera c, bool wireframe);
 }
