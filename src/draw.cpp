@@ -57,7 +57,7 @@ m3::mat4 perspectiveMatrix()
     return m3::mat4(rows);
 }
 
-void sr::draw(sr::Model m, sr::Camera c)
+void sr::draw(sr::Model m, sr::Camera c) // TODO: Refactor
 {
     std::vector<m3::vec4> vertices;
 

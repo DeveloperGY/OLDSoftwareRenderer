@@ -5,22 +5,19 @@
 
 #include <chrono>
 
+void handleInput(char ch, sr::Camera &c, double dt);
+
 int main(void)
 {
-    const int width = 160 * 2;
-    const int height = 96 * 2;
+    const int width = 80;
+    const int height = 48;
 
     if (!sr::init(width, height, 60.0f))
     {
         return -1;
     }
 
-    sr::Model m("res/monkey.obj");
-    sr::Model m1("res/cube.obj");
-    sr::Model m2("res/cube.obj");
-    m1.translate(2, 0, 0);
-    m2.translate(-2, 0, 0);
-    m.translate(0, 0, 0);
+    sr::Model m("res/cube.obj");
 
     sr::Camera c;
 
@@ -33,14 +30,21 @@ int main(void)
         auto now = std::chrono::steady_clock::now();
         double dt = std::chrono::duration_cast<std::chrono::milliseconds>(now - past).count() / 1000.0f;
         past = now;
-        m.rotate(0 * dt, 90 * dt, 0 * dt);
         sr::draw(m, c);
-        sr::draw(m1, c);
-        sr::draw(m2, c);
         td_drawPoint(width/2, height/2, '+', TD_COLOR_MAGENTA, TD_COLOR_DEFAULT);
         sr::display();
 
-        double speed = 15;
+        handleInput(ch, c, dt);
+    }
+
+    sr::clean();
+
+    return 0;
+}
+
+void handleInput(char ch, sr::Camera &c, double dt)
+{
+    double speed = 15;
 
         if (ch == 'w')
         {
@@ -98,9 +102,6 @@ int main(void)
 
             c.rotation = c.rotation * rot;
         }
-    }
 
-    sr::clean();
-
-    return 0;
+    return;
 }
